@@ -1,12 +1,20 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import PlayersList from "../views/ListView.vue";
-
+import PlayerStats from "../components/PlayerStats.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "PlayersList",
     component: PlayersList,
+    children: [
+      {
+        name: "PlayerStats",
+        path: "/player_stats/:id",
+        component: PlayerStats,
+      },
+    ],
   },
+
   {
     path: "/about",
     name: "About",

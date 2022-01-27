@@ -1,6 +1,7 @@
 <template>
   <div id="nav">
     <router-link to="/">ListView</router-link> |
+    <!--    <router-link to="/player_stats/:id">Player Stats</router-link> |-->
     <router-link to="/about">About</router-link>
   </div>
   <router-view />

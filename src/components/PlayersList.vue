@@ -4,11 +4,18 @@
 
     <ul>
       <li v-for="player in playersList" :key="player.id">
-        {{ player.first_name }} {{ player.last_name }}
+        <router-link
+          :to="{ name: 'PlayerStats', params: { id: player.id } }"
+          append
+          >{{ player.first_name }} {{ player.last_name }}
+        </router-link>
       </li>
     </ul>
+
     <button @click="decrement">Prev</button>
-    <div>page {{ pageNumber }} of 100</div>
+
+    <div v-if="!searched">page {{ pageNumber }} of 100</div>
+
     <button @click="increment">Next</button>
 
     <input
@@ -19,14 +26,27 @@
     />
 
     <button @click="goTo">Go to</button>
+
+    <input
+      placeholder="search"
+      @keyup.enter="searchPlayer"
+      v-model="searchInput"
+    />
+    <button @click="searchPlayer">search</button>
+
     <div>{{ fetchState }}</div>
+
+    <p v-if="playersList.length < 1">not found</p>
   </div>
+  <router-view :key="$route.fullPath" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { PlayerType } from "@/types/PlayerType";
 import { FetchState } from "@/types/FetchType";
+import { GET_ALL_PlAYERS_URL } from "@/api/api.ts";
+import { GET_PLAYER_URL } from "@/api/api.ts";
 
 export default defineComponent({
   data() {
@@ -35,19 +55,17 @@ export default defineComponent({
       playersList: [] as Array<PlayerType>,
       pageNumber: 1 as number,
       selectedPageNumber: 1 as number,
-      GET_ALL_PlAYERS_URL:
-        "https://www.balldontlie.io/api/v1/players" as string,
       fetchState: FetchState.isIdle,
+      searchInput: "" as string,
+      searched: false,
     };
   },
 
   methods: {
-    async getData() {
+    async getData(url: string) {
       this.fetchState = FetchState.isLoading;
       try {
-        await fetch(
-          `${this.GET_ALL_PlAYERS_URL}?page=${this.pageNumber}&per_page=25`
-        )
+        await fetch(url)
           .then((response) => response.json())
           .then((data) => {
             this.playersList = data.data;
@@ -62,29 +80,40 @@ export default defineComponent({
     decrement() {
       if (this.pageNumber > 1) {
         this.pageNumber--;
-        this.getData();
+        this.getData(GET_ALL_PlAYERS_URL(this.pageNumber));
+        this.searched = false;
       }
     },
     increment() {
       if (this.pageNumber <= 100) {
         this.pageNumber++;
-        this.getData();
+        this.getData(GET_ALL_PlAYERS_URL(this.pageNumber));
+        this.searched = false;
       }
     },
     goTo() {
       if (this.selectedPageNumber > 100) {
         alert(
-          `page ${this.selectedPageNumber} does not exist exist, select page from 1 to 100`
+          `page number ${this.selectedPageNumber} does not exist, select page from 1 to 100`
         );
       } else {
         this.pageNumber = this.selectedPageNumber;
-        this.getData();
+        this.getData(GET_ALL_PlAYERS_URL(this.pageNumber));
+        this.searched = false;
+      }
+    },
+    searchPlayer() {
+      if (this.searchInput.length > 0) {
+        this.getData(GET_PLAYER_URL(this.searchInput));
+        this.searched = true;
+      } else {
+        alert(" first type search key word");
       }
     },
   },
 
   mounted() {
-    this.getData();
+    this.getData(GET_ALL_PlAYERS_URL(1));
   },
 });
 </script>
