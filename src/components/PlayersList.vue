@@ -14,7 +14,7 @@
 
     <button @click="decrement">Prev</button>
 
-    <div v-if="!searched">page {{ pageNumber }} of 100</div>
+    <div>page {{ pageNumber }} of 100</div>
 
     <button @click="increment">Next</button>
 
@@ -57,7 +57,6 @@ export default defineComponent({
       selectedPageNumber: 1 as number,
       fetchState: FetchState.isIdle,
       searchInput: "" as string,
-      searched: false,
     };
   },
 
@@ -81,14 +80,12 @@ export default defineComponent({
       if (this.pageNumber > 1) {
         this.pageNumber--;
         this.getData(GET_ALL_PlAYERS_URL(this.pageNumber));
-        this.searched = false;
       }
     },
     increment() {
       if (this.pageNumber <= 100) {
         this.pageNumber++;
         this.getData(GET_ALL_PlAYERS_URL(this.pageNumber));
-        this.searched = false;
       }
     },
     goTo() {
@@ -99,13 +96,11 @@ export default defineComponent({
       } else {
         this.pageNumber = this.selectedPageNumber;
         this.getData(GET_ALL_PlAYERS_URL(this.pageNumber));
-        this.searched = false;
       }
     },
     searchPlayer() {
       if (this.searchInput.length > 0) {
         this.getData(GET_PLAYER_URL(this.searchInput));
-        this.searched = true;
       } else {
         alert(" first type search key word");
       }
