@@ -11,15 +11,22 @@
     <div>page {{ pageNumber }} of 100</div>
     <button @click="increment">Next</button>
 
-    <input placeholder="choose page" v-model.number="selectedPageNumber" />
+    <input
+      placeholder="choose page"
+      type="number"
+      v-model.number="selectedPageNumber"
+      @keyup.enter="goTo"
+    />
 
     <button @click="goTo">Go to</button>
+    <div>{{ fetchState }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { PlayerType } from "@/types/PlayerType";
+import { FetchState } from "@/types/FetchType";
 
 export default defineComponent({
   data() {
@@ -28,23 +35,28 @@ export default defineComponent({
       playersList: [] as Array<PlayerType>,
       pageNumber: 1 as number,
       selectedPageNumber: 1 as number,
-      // fetchState: state.idle as stateType;
+      GET_ALL_PlAYERS_URL:
+        "https://www.balldontlie.io/api/v1/players" as string,
+      fetchState: FetchState.isIdle,
     };
   },
 
   methods: {
     async getData() {
+      this.fetchState = FetchState.isLoading;
       try {
         await fetch(
-          `https://www.balldontlie.io/api/v1/players?page=${this.pageNumber}&per_page=25`
+          `${this.GET_ALL_PlAYERS_URL}?page=${this.pageNumber}&per_page=25`
         )
           .then((response) => response.json())
           .then((data) => {
             this.playersList = data.data;
             console.log(this.playersList);
+            this.fetchState = FetchState.isLoaded;
           });
       } catch (error) {
         console.error(error);
+        this.fetchState = FetchState.isLoadFail;
       }
     },
     decrement() {
@@ -60,8 +72,14 @@ export default defineComponent({
       }
     },
     goTo() {
-      this.pageNumber = this.selectedPageNumber;
-      this.getData();
+      if (this.selectedPageNumber > 100) {
+        alert(
+          `page ${this.selectedPageNumber} does not exist exist, select page from 1 to 100`
+        );
+      } else {
+        this.pageNumber = this.selectedPageNumber;
+        this.getData();
+      }
     },
   },
 
