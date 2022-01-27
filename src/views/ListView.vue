@@ -1,6 +1,6 @@
 <template>
   <div class="PlayersList">
-    <Suspense> <PlayersList /></Suspense>
+    <PlayersList />
   </div>
 </template>
 
