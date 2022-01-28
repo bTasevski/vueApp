@@ -14,7 +14,7 @@
 
     <button @click="decrement">Prev</button>
 
-    <div>page {{ pageNumber }} of 100</div>
+    <div>page {{ pageNumber }} of {{ lastPageNumber }}</div>
 
     <button @click="increment">Next</button>
 
@@ -46,15 +46,15 @@ import { defineComponent } from "vue";
 import { PlayerType } from "@/types/PlayerType";
 import { FetchState } from "@/types/FetchType";
 import { GET_ALL_PlAYERS_URL } from "@/api/api.ts";
-import { GET_PLAYER_URL } from "@/api/api.ts";
+import { GET_SEARCHED_PLAYERS_URL } from "@/api/api.ts";
 
 export default defineComponent({
   data() {
     return {
-      query: null,
       playersList: [] as Array<PlayerType>,
       pageNumber: 1 as number,
       selectedPageNumber: 1 as number,
+      lastPageNumber: 126,
       fetchState: FetchState.isIdle,
       searchInput: "" as string,
     };
@@ -83,15 +83,15 @@ export default defineComponent({
       }
     },
     increment() {
-      if (this.pageNumber <= 100) {
+      if (this.pageNumber <= this.lastPageNumber) {
         this.pageNumber++;
         this.getData(GET_ALL_PlAYERS_URL(this.pageNumber));
       }
     },
     goTo() {
-      if (this.selectedPageNumber > 100) {
+      if (this.selectedPageNumber > this.lastPageNumber) {
         alert(
-          `page number ${this.selectedPageNumber} does not exist, select page from 1 to 100`
+          `page number ${this.selectedPageNumber} does not exist, select page from 1 to ${this.lastPageNumber}`
         );
       } else {
         this.pageNumber = this.selectedPageNumber;
@@ -100,7 +100,7 @@ export default defineComponent({
     },
     searchPlayer() {
       if (this.searchInput.length > 0) {
-        this.getData(GET_PLAYER_URL(this.searchInput));
+        this.getData(GET_SEARCHED_PLAYERS_URL(this.searchInput));
       } else {
         alert(" first type search key word");
       }

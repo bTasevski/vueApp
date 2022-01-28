@@ -1,28 +1,29 @@
 <template>
-  <div>{{ this.$route.params.id }}</div>
-  <div>{{ this.playerStats }}</div>
+  <div>{{ id }}</div>
+  <div>{{ fetchState }}</div>
+  <div v-if="playerStats.length > 0">{{ playerStats }}</div>
+  <div v-if="playerStats.length === 0">no statistic available</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FetchState } from "@/types/FetchType";
+import { GET_PlAYER_STATS_URL } from "@/api/api";
 
 export default defineComponent({
   data() {
     return {
       playerStats: {},
-      GET_PlAYER_STATS_URL: "https://www.balldontlie.io/api/v1/stats" as string,
+      id: this.$route.params.id as string,
       fetchState: FetchState.isIdle,
     };
   },
 
   methods: {
-    async getData() {
+    async getData(url: string) {
       this.fetchState = FetchState.isLoading;
       try {
-        await fetch(
-          `${this.GET_PlAYER_STATS_URL}?player_ids[]=${this.$route.params.id}`
-        )
+        await fetch(url)
           .then((response) => response.json())
           .then((data) => {
             this.playerStats = data.data;
@@ -36,7 +37,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.getData();
+    this.getData(GET_PlAYER_STATS_URL(this.id));
   },
 });
 </script>
