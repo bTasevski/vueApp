@@ -1,44 +1,56 @@
 <template>
-  <div class="PlayersList">
-    <h1>Players List:</h1>
+  <div style="display: flex; gap: 100px">
+    <div class="PlayersList">
+      <div>
+        <button @click="decrement">Prev</button>
 
-    <ul>
-      <li v-for="player in playersList" :key="player.id">
-        <router-link
-          :to="{ name: 'PlayerStats', params: { id: player.id } }"
-          append
-          >{{ player.first_name }} {{ player.last_name }}
-        </router-link>
-      </li>
-    </ul>
+        <div style="display: inline-block">
+          page {{ pageNumber }} of {{ lastPageNumber }}
+        </div>
 
-    <button @click="decrement">Prev</button>
+        <button @click="increment">Next</button>
+      </div>
+      <div>
+        <input
+          placeholder="choose page"
+          type="number"
+          v-model.number="selectedPageNumber"
+          @keyup.enter="goTo"
+        />
 
-    <div>page {{ pageNumber }} of {{ lastPageNumber }}</div>
+        <button @click="goTo">Go to</button>
+      </div>
+      <div>
+        <input
+          placeholder="search"
+          @keyup.enter="searchPlayer"
+          v-model="searchInput"
+        />
+        <button
+          title="Search player by name or/and surname. Be specific - list
+        will show max. of 30 matching players"
+          @click="searchPlayer"
+        >
+          search
+        </button>
+      </div>
+      <div>
+        <h2>Players List:</h2>
+        <ul>
+          <li v-for="player in playersList" :key="player.id">
+            <router-link
+              :to="{ name: 'PlayerStats', params: { id: player.id } }"
+              append
+              >{{ player.first_name }} {{ player.last_name }}
+            </router-link>
+          </li>
+        </ul>
+      </div>
 
-    <button @click="increment">Next</button>
-
-    <input
-      placeholder="choose page"
-      type="number"
-      v-model.number="selectedPageNumber"
-      @keyup.enter="goTo"
-    />
-
-    <button @click="goTo">Go to</button>
-
-    <input
-      placeholder="search"
-      @keyup.enter="searchPlayer"
-      v-model="searchInput"
-    />
-    <button @click="searchPlayer">search</button>
-
-    <div>{{ fetchState }}</div>
-
-    <p v-if="playersList.length < 1">not found</p>
+      <p v-if="playersList.length < 1">not found</p>
+    </div>
+    <router-view :key="$route.fullPath" />
   </div>
-  <router-view :key="$route.fullPath" />
 </template>
 
 <script lang="ts">
@@ -47,6 +59,7 @@ import { PlayerType } from "@/types/PlayerType";
 import { FetchState } from "@/types/FetchType";
 import { GET_ALL_PlAYERS_URL } from "@/api/api.ts";
 import { GET_SEARCHED_PLAYERS_URL } from "@/api/api.ts";
+import { handleFetchErrors } from "@/methods/handleFetchError";
 
 export default defineComponent({
   data() {
@@ -65,7 +78,9 @@ export default defineComponent({
       this.fetchState = FetchState.isLoading;
       try {
         await fetch(url)
+          .then(handleFetchErrors)
           .then((response) => response.json())
+
           .then((data) => {
             this.playersList = data.data;
             console.log(this.playersList);
@@ -83,7 +98,7 @@ export default defineComponent({
       }
     },
     increment() {
-      if (this.pageNumber <= this.lastPageNumber) {
+      if (this.pageNumber < this.lastPageNumber) {
         this.pageNumber++;
         this.getData(GET_ALL_PlAYERS_URL(this.pageNumber));
       }
