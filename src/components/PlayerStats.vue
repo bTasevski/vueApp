@@ -2,7 +2,7 @@
   <div style="display: flex; gap: 100px">
     <PlayerBasicData v-bind:playerBasicData="playerBasicData" />
     <div>
-      <h3>Choose seasons range</h3>
+      <h3>Choose seasons range <span>(max 10 seasons)</span></h3>
       <div>
         <div>
           <label for="fromSeasonInput">from</label>
@@ -10,6 +10,7 @@
             id="fromSeasonInput"
             type="number"
             placeholder="type season"
+            @keyup.enter="getSeasonsAverages"
             v-model="fromSeasonInput"
           />
           <label for="fromSeasonInput">to</label>
@@ -34,21 +35,15 @@ import PlayerBasicData from "@/components/PlayerBasicData.vue";
 import PlayerSpecificData from "@/components/PlayerSpecificData.vue";
 import { FetchState } from "@/types/FetchType";
 import { handleFetchErrors } from "@/methods/handleFetchError";
-import {
-  GET_PlAYER_STATS_URL,
-  GET_PLAYER_SEASON_AVERAGE_URL,
-  GET_PlAYER_URL,
-  GET_SEARCHED_PLAYERS_URL,
-} from "@/api/api";
+import { GET_PLAYER_SEASON_AVERAGE_URL, GET_PlAYER_URL } from "@/api/api";
 import { PlayerAverages } from "@/types/PlayerAverages";
-import playerSpecificData from "@/components/PlayerSpecificData.vue";
 
 export default defineComponent({
   components: { PlayerBasicData, PlayerSpecificData },
   data() {
     return {
-      fromSeasonInput: 2000,
-      toSeasonInput: 2021,
+      fromSeasonInput: 2011,
+      toSeasonInput: 2020,
       playerBasicData: {
         id: null as null | number,
         first_name: null as null | string,
@@ -64,6 +59,9 @@ export default defineComponent({
       id: this.$route.params.id as string,
       fetchState: FetchState.isIdle,
       playerSpecificData: [] as Array<PlayerAverages>,
+      seasons: [] as Array<number | null>,
+      gamesPerSeason: [] as Array<number | null>,
+      minutesPerMatch: [] as Array<string | null>,
     };
   },
 
@@ -93,7 +91,7 @@ export default defineComponent({
           .then(handleFetchErrors)
           .then((response) => response.json())
           .then((data) => {
-            this.playerSpecificData.push(data);
+            this.playerSpecificData.push(data.data);
             console.log(this.playerSpecificData);
             this.fetchState = FetchState.isLoaded;
           });
@@ -113,7 +111,7 @@ export default defineComponent({
           this.toSeasonInput > 1978 &&
           this.toSeasonInput < 2100
         ) {
-          if (range <= 21) {
+          if (range <= 10) {
             for (let i = 0; i <= range; i++) {
               this.getSpecificData(
                 GET_PLAYER_SEASON_AVERAGE_URL(
@@ -121,11 +119,11 @@ export default defineComponent({
                   this.fromSeasonInput + counter
                 )
               );
-              console.log(this.fromSeasonInput + counter);
+
               counter++;
             }
           } else {
-            alert("maximum season range is 21");
+            alert("maximum season range is 10");
           }
         } else {
           alert("type date in YYYY format, minimum date is 1978");
@@ -135,11 +133,10 @@ export default defineComponent({
       }
     },
   },
-  mounted() {
-    // this.getSpecificData(GET_PLAYER_SEASON_AVERAGE_URL(this.id, 2022));
 
-    // this.getData(GET_PlAYER_STATS_URL(this.id));
+  mounted() {
     this.getBasicData(GET_PlAYER_URL(this.id));
+    this.getSeasonsAverages();
   },
 });
 </script>

@@ -1,38 +1,57 @@
 <template>
   <div>
     <h2>Detailed statistics:</h2>
-    <!--    <div v-if="playerSpecificData.data?.length">-->
-    <!--      <div>-->
-    <!--        <span>{{ playerSpecificData.data[0].games_played }} games played</span>-->
-    <!--      </div>-->
-    <!--      <div>-->
-    <!--        <span>{{ playerSpecificData.data[0].min }} minutes</span>-->
-    <!--      </div>-->
-    <!--      <div>-->
-    <!--        <span>{{ playerSpecificData.data[0].ast }} assists</span>-->
-    <!--      </div>-->
-    <!--      <div>-->
-    <!--        <span>{{ playerSpecificData.data[0].pts }} points</span>-->
-    <!--      </div>-->
-    <!--      <div>-->
-    <!--        <span>{{ playerSpecificData.data[0].ftm }} free throws</span>-->
-    <!--      </div>-->
-    <!--      <div>-->
-    <!--        <span>{{ playerSpecificData.data[0].fga }} field goals</span>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--    <div v-else>-->
-    <!--      No data available, consider changing seasons range. Default season range-->
-    <!--      is 2000-2021-->
-    <!--    </div>-->
+    <div>
+      <span>{{ seasons }} games played</span>
+    </div>
+    <!--    <div v-if="seasons.length > 0" >-->
+    <div>
+      <span>{{ gamesPerSeason }} games played</span>
+    </div>
+    <div>
+      <span>{{ minutesPerMatch }} games played</span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { PlayerAverages } from "@/types/PlayerAverages";
+
 export default defineComponent({
   name: "PlayerSpecificData",
   props: ["playerSpecificData"],
+
+  data() {
+    return {
+      seasons: [] as Array<number | null>,
+      gamesPerSeason: [] as Array<number | null>,
+      minutesPerMatch: [] as Array<string | null>,
+    };
+  },
+
+  watch: {
+    playerSpecificData: {
+      handler(val) {
+        this.seasons = [];
+        this.gamesPerSeason = [];
+        this.minutesPerMatch = [];
+
+        val
+          .flat()
+          .sort((a: any, b: any) => a.season - b.season)
+          .forEach((d: PlayerAverages) => {
+            this.seasons.push(d.season);
+            this.gamesPerSeason.push(d.games_played);
+            this.minutesPerMatch.push(d.min);
+            console.log(this.gamesPerSeason);
+          });
+      },
+
+      deep: true,
+      immediate: true,
+    },
+  },
 });
 </script>
