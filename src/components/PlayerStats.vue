@@ -2,23 +2,30 @@
   <div style="display: flex; gap: 100px">
     <PlayerBasicData v-bind:playerBasicData="playerBasicData" />
     <div>
-      <h3>Choose season and see player detailed statistics</h3>
+      <h3>Choose seasons range</h3>
       <div>
         <div>
+          <label for="fromSeasonInput">from</label>
           <input
+            id="fromSeasonInput"
             type="number"
             placeholder="type season"
-            @keyup.enter="getSeasonAverages"
-            v-model="seasonInput"
+            v-model="fromSeasonInput"
           />
-          <button @click="getSeasonAverages">Get averages by season</button>
+          <label for="fromSeasonInput">to</label>
+          <input
+            id="toSeasonInput"
+            type="number"
+            placeholder="type season"
+            @keyup.enter="getSeasonsAverages"
+            v-model="toSeasonInput"
+          />
+          <button @click="getSeasonsAverages">Get seasons averages</button>
         </div>
       </div>
     </div>
     <PlayerSpecificData v-bind:playerSpecificData="playerSpecificData" />
   </div>
-
-  <!--  <div>{{ playerSpecificData }}}</div>-->
 </template>
 
 <script lang="ts">
@@ -34,12 +41,14 @@ import {
   GET_SEARCHED_PLAYERS_URL,
 } from "@/api/api";
 import { PlayerAverages } from "@/types/PlayerAverages";
+import playerSpecificData from "@/components/PlayerSpecificData.vue";
 
 export default defineComponent({
   components: { PlayerBasicData, PlayerSpecificData },
   data() {
     return {
-      seasonInput: 2021,
+      fromSeasonInput: 2000,
+      toSeasonInput: 2021,
       playerBasicData: {
         id: null as null | number,
         first_name: null as null | string,
@@ -54,7 +63,7 @@ export default defineComponent({
       },
       id: this.$route.params.id as string,
       fetchState: FetchState.isIdle,
-      playerSpecificData: {} as PlayerAverages,
+      playerSpecificData: [] as Array<PlayerAverages>,
     };
   },
 
@@ -77,13 +86,15 @@ export default defineComponent({
     },
 
     async getSpecificData(url: string) {
+      this.playerSpecificData = [];
       this.fetchState = FetchState.isLoading;
       try {
         await fetch(url)
           .then(handleFetchErrors)
           .then((response) => response.json())
           .then((data) => {
-            this.playerSpecificData = data;
+            this.playerSpecificData.push(data);
+            console.log(this.playerSpecificData);
             this.fetchState = FetchState.isLoaded;
           });
       } catch (error) {
@@ -92,19 +103,40 @@ export default defineComponent({
       }
     },
 
-    getSeasonAverages() {
-      if (this.seasonInput > 1978 && this.seasonInput < 10000) {
-        this.getSpecificData(
-          GET_PLAYER_SEASON_AVERAGE_URL(this.id, this.seasonInput)
-        );
-        console.log("to tutaj");
+    getSeasonsAverages() {
+      const range: number = this.toSeasonInput - this.fromSeasonInput;
+      let counter = 0;
+      if (this.fromSeasonInput <= this.toSeasonInput) {
+        if (
+          this.fromSeasonInput > 1978 &&
+          this.fromSeasonInput < 2100 &&
+          this.toSeasonInput > 1978 &&
+          this.toSeasonInput < 2100
+        ) {
+          if (range <= 21) {
+            for (let i = 0; i <= range; i++) {
+              this.getSpecificData(
+                GET_PLAYER_SEASON_AVERAGE_URL(
+                  this.id,
+                  this.fromSeasonInput + counter
+                )
+              );
+              console.log(this.fromSeasonInput + counter);
+              counter++;
+            }
+          } else {
+            alert("maximum season range is 21");
+          }
+        } else {
+          alert("type date in YYYY format, minimum date is 1978");
+        }
       } else {
-        alert("type date in YYYY format");
+        alert("season from should be before or same as season to ");
       }
     },
   },
   mounted() {
-    this.getSpecificData(GET_PLAYER_SEASON_AVERAGE_URL(this.id, 2021));
+    // this.getSpecificData(GET_PLAYER_SEASON_AVERAGE_URL(this.id, 2022));
 
     // this.getData(GET_PlAYER_STATS_URL(this.id));
     this.getBasicData(GET_PlAYER_URL(this.id));
