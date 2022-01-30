@@ -2,14 +2,24 @@
   <div>
     <h2>Detailed statistics:</h2>
     <div>
-      <span>{{ seasons }} games played</span>
+      <span>{{ seasons }} seasons</span>
     </div>
-    <!--    <div v-if="seasons.length > 0" >-->
+
     <div>
       <span>{{ gamesPerSeason }} games played</span>
     </div>
     <div>
-      <span>{{ minutesPerMatch }} games played</span>
+      <span>{{ pointsPerMatch }} minutes per match</span>
+    </div>
+    <div>
+      <div>
+        <h3>Games per season</h3>
+        <BarChartStats v-bind:labels="seasons" v-bind:data="gamesPerSeason" />
+      </div>
+      <div>
+        <h3>Minutes per game</h3>
+        <BarChartStats v-bind:labels="seasons" v-bind:data="pointsPerMatch" />
+      </div>
     </div>
   </div>
 </template>
@@ -17,17 +27,22 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import BarChartStats from "@/components/BarChartStats.vue";
+
 import { PlayerAverages } from "@/types/PlayerAverages";
 
 export default defineComponent({
   name: "PlayerSpecificData",
   props: ["playerSpecificData"],
+  components: {
+    BarChartStats,
+  },
 
   data() {
     return {
       seasons: [] as Array<number | null>,
       gamesPerSeason: [] as Array<number | null>,
-      minutesPerMatch: [] as Array<string | null>,
+      pointsPerMatch: [] as Array<number | null>,
     };
   },
 
@@ -36,7 +51,7 @@ export default defineComponent({
       handler(val) {
         this.seasons = [];
         this.gamesPerSeason = [];
-        this.minutesPerMatch = [];
+        this.pointsPerMatch = [];
 
         val
           .flat()
@@ -44,7 +59,7 @@ export default defineComponent({
           .forEach((d: PlayerAverages) => {
             this.seasons.push(d.season);
             this.gamesPerSeason.push(d.games_played);
-            this.minutesPerMatch.push(d.min);
+            this.pointsPerMatch.push(d.pts);
             console.log(this.gamesPerSeason);
           });
       },

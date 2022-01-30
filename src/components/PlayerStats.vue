@@ -1,8 +1,8 @@
 <template>
   <div style="display: flex; gap: 100px">
-    <PlayerBasicData v-bind:playerBasicData="playerBasicData" />
+    <PlayerBasicData :playerBasicData="playerBasicData" />
     <div>
-      <h3>Choose seasons range <span>(max 10 seasons)</span></h3>
+      <h3>Choose seasons range <span>(max 5 seasons)</span></h3>
       <div>
         <div>
           <label for="fromSeasonInput">from</label>
@@ -42,7 +42,7 @@ export default defineComponent({
   components: { PlayerBasicData, PlayerSpecificData },
   data() {
     return {
-      fromSeasonInput: 2011,
+      fromSeasonInput: 2016,
       toSeasonInput: 2020,
       playerBasicData: {
         id: null as null | number,
@@ -111,7 +111,7 @@ export default defineComponent({
           this.toSeasonInput > 1978 &&
           this.toSeasonInput < 2100
         ) {
-          if (range <= 10) {
+          if (range <= 4) {
             for (let i = 0; i <= range; i++) {
               this.getSpecificData(
                 GET_PLAYER_SEASON_AVERAGE_URL(
@@ -123,7 +123,7 @@ export default defineComponent({
               counter++;
             }
           } else {
-            alert("maximum season range is 10");
+            alert("maximum season range is 5");
           }
         } else {
           alert("type date in YYYY format, minimum date is 1978");
