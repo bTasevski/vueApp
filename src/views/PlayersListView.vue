@@ -25,7 +25,7 @@
         <span v-if="fetchState === FetchState.isLoadFail"
           >An error occurred while fetching data</span
         >
-        <span v-if="fetchState === FetchState.isLoading">loading</span>
+        <span v-if="fetchState === FetchState.isLoading">loading...</span>
 
         <span
           v-if="playersList.length < 1 && fetchState === FetchState.isLoaded"
@@ -160,7 +160,7 @@ export default defineComponent({
       if (this.searchInput.length > 0) {
         this.getData(GET_SEARCHED_PLAYERS_URL(this.searchInput));
       } else {
-        alert(" first type search key word");
+        alert("first type searched key word");
       }
     },
   },

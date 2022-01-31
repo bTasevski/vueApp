@@ -4,7 +4,7 @@
       class="stats__basicData"
       :playerBasicData="playerBasicData"
     />
-    <!--              model-value="Number"-->
+
     <div class="stats__rangeInputs">
       <h3>Choose seasons range <span>(max 5 seasons)</span></h3>
       <div class="stats__fromTo">
@@ -137,7 +137,6 @@ export default defineComponent({
                   this.fromSeasonInput + counter
                 )
               );
-
               counter++;
             }
           } else {

@@ -1,6 +1,7 @@
 <template>
   <div style="">
     <BarChart v-bind="barChartProps" />
+    <span v-if="labels.length < 1">No data available</span>
   </div>
 </template>
 
