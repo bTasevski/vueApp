@@ -3,9 +3,9 @@
   <div class="mainContainer">
     <div class="mainContainer__sidebar">
       <div class="mainContainer__search">
-        <VaInput
+        <input
           class="mainContainer__search--input"
-          model-value="String"
+          type="search"
           placeholder="search"
           @keyup.enter="searchPlayer"
           v-model="searchInput"
@@ -71,16 +71,14 @@
         <div class="mainContainer__goTo">
           <VaButton
             icon-right="keyboard_double_arrow_right"
-            style="display: inline-block"
             gradient
             :rounded="false"
             @click="goTo"
             >GO TO</VaButton
           >
-          <VaInput
-            style="display: inline-block"
+          <input
             class="mainContainer__goToInput"
-            model-value="Number"
+            type="number"
             v-model.number="selectedPageNumber"
             @keyup.enter="goTo"
           />
@@ -98,13 +96,12 @@ import { FetchState } from "@/types/FetchType";
 import { GET_ALL_PlAYERS_URL } from "@/api/api.ts";
 import { GET_SEARCHED_PLAYERS_URL } from "@/api/api.ts";
 import { handleFetchErrors } from "@/methods/handleFetchError";
-import { VaButton, VaInput } from "vuestic-ui";
+import { VaButton } from "vuestic-ui";
 import "@/assets/PlayerListView.scss";
 
 export default defineComponent({
   components: {
     VaButton,
-    VaInput,
   },
 
   data() {
