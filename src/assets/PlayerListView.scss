@@ -1,103 +1,18 @@
-.mainHeader {
-  height: 8vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-
-  h1 {
-    margin-left: 60px;
-    font-size: 40px;
-    color: rgb(46, 133, 224);
-  }
+.appGrid {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr 10fr;
+  grid-template-areas:
+    "header header"
+    "sidebar stats";
+  justify-items: center;
 }
-
-.mainContainer {
-  display: flex;
-  max-height: 85vw;
-  width: 100%;
-  flex-direction: row;
-  align-items: stretch;
-
-  &__sidebar {
-    display: flex;
-    flex-direction: column;
-    min-width: 400px;
-    gap: 25px;
-  }
-  &__search {
-    display: flex;
-    gap: 20px;
-    justify-content: space-around;
-    align-items: center;
-    height: 60px;
-    align-self: center;
-    justify-self: start;
-    margin-left: 30px;
-
-    input {
-      width: 150px;
-    }
-  }
-  &__playerList {
-    margin-left: 40px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: start;
-    font-size: 24px;
-    letter-spacing: 2px;
-    height: 600px;
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-  &__item {
-    border-bottom: 1px solid grey;
-    line-height: 1.7;
-    &:last-child {
-      border-bottom: none;
-    }
-    &:hover {
-      background-color: rgb(244, 248, 250);
-    }
-  }
-  &__moveButtonsContainer {
-    justify-content: end;
-  }
-  &__nextPrevButtons {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 60px;
-  }
-  &__pageNumber {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60px;
-    font-size: 14px;
-    font-weight: bold;
-  }
-  &__goTo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60px;
-    gap: 30px;
-  }
-  &__goToInput {
-    width: 80px;
-    margin-left: 10px;
-  }
+.mainHeader {
+  grid-area: header;
+}
+.sidebar {
+  grid-area: sidebar;
 }
 .statsContainer {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-
-  grid-template-areas:
-    "basic range"
-    "charts charts";
+  grid-area: stats;
 }

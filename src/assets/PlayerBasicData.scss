@@ -1,28 +1,28 @@
-.basicDataContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  grid-area: basic;
-
-  &__headingH2 {
-    font-size: 34px;
-    margin-bottom: 15px;
-  }
-
-  &__playerDataContainer {
-    font-size: 30px;
-    line-height: 1.2;
-    letter-spacing: 1px;
-  }
-
-  &__detail {
-    display: flex;
-    flex-direction: row;
-
-    justify-content: space-between;
-  }
-}
-.bold {
-  font-weight: 600;
-}
+//.basicDataContainer {
+//  display: flex;
+//  flex-direction: column;
+//  justify-content: center;
+//  align-items: center;
+//  grid-area: basic;
+//
+//  &__headingH2 {
+//    font-size: 34px;
+//    margin-bottom: 15px;
+//  }
+//
+//  &__playerDataContainer {
+//    font-size: 30px;
+//    line-height: 1.2;
+//    letter-spacing: 1px;
+//  }
+//
+//  &__detail {
+//    display: flex;
+//    flex-direction: row;
+//
+//    justify-content: space-between;
+//  }
+//}
+//.bold {
+//  font-weight: 600;
+//}

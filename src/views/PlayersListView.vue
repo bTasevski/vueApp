@@ -1,10 +1,10 @@
 <template>
-  <header class="mainHeader"><h1>NBA Stats</h1></header>
-  <div class="mainContainer">
-    <div class="mainContainer__sidebar">
-      <div class="mainContainer__search">
+  <div class="appGrid">
+    <header class="mainHeader"><h1>NBA Stats</h1></header>
+    <div class="sidebar">
+      <div class="sidebar__search">
         <input
-          class="mainContainer__search--input"
+          class="sidebar__search--input"
           type="search"
           placeholder="search"
           @keyup.enter="searchPlayer"
@@ -21,7 +21,7 @@
           SEARCH
         </VaButton>
       </div>
-      <div class="mainContainer__playerList">
+      <div class="sidebar__playerList">
         <span v-if="fetchState === FetchState.isLoadFail"
           >An error occurred while fetching data</span
         >
@@ -33,7 +33,7 @@
         >
         <ul>
           <li
-            class="mainContainer__item"
+            class="sidebar__item"
             v-for="player in playersList"
             :key="player.id"
           >
@@ -45,9 +45,9 @@
           </li>
         </ul>
       </div>
-      <div class="mainContainer__moveButtonsContainer">
+      <div class="sidebar__moveButtonsContainer">
         <div>
-          <div class="mainContainer__nextPrevButtons">
+          <div class="sidebar__nextPrevButtons">
             <VaButton
               icon="navigate_before"
               gradient
@@ -55,7 +55,7 @@
               @click="decrement"
               >PREV</VaButton
             >
-            <div class="mainContainer__pageNumber">
+            <div class="sidebar__pageNumber">
               PAGE {{ pageNumber }}/{{ lastPageNumber }}
             </div>
 
@@ -68,7 +68,7 @@
             >
           </div>
         </div>
-        <div class="mainContainer__goTo">
+        <div class="sidebar_goTo">
           <VaButton
             icon-right="keyboard_double_arrow_right"
             gradient
@@ -77,7 +77,7 @@
             >GO TO</VaButton
           >
           <input
-            class="mainContainer__goToInput"
+            class="sidebar__goToInput"
             type="number"
             v-model.number="selectedPageNumber"
             @keyup.enter="goTo"
@@ -85,6 +85,7 @@
         </div>
       </div>
     </div>
+
     <div><router-view :key="$route.fullPath" class="statsContainer" /></div>
   </div>
 </template>
