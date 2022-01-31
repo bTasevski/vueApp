@@ -1,5 +1,5 @@
 # NBA stats
-[![Netlify Status](https://api.netlify.com/api/v1/badges/10d6f625-5367-4686-8f65-8f1e727c26ac/deploy-status)](https://app.netlify.com/sites/nba-stats-vueapp/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/10d6f625-5367-4686-8f65-8f1e727c26ac/deploy-status)](https://app.netlify.com/sites/nba-stats-vueapp/deploys) \
 Go Live: https://nba-stats-vueapp.netlify.app/
 
 *works only for desktop
