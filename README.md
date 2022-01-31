@@ -1,5 +1,9 @@
 # NBA stats
 
+Go Live: https://nba-stats-vueapp.netlify.app/
+
+*works only for desktop
+
 ## Installation and Setup
 
 Make sure `node` and `npm` are installed globally.

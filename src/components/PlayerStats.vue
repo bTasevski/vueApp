@@ -46,7 +46,7 @@
 import { defineComponent } from "vue";
 import PlayerBasicData from "@/components/PlayerBasicData.vue";
 import PlayerSpecificData from "@/components/PlayerSpecificData.vue";
-import { FetchState } from "@/types/FetchType";
+import { FetchState, FetchType } from "@/types/FetchType";
 import { handleFetchErrors } from "@/methods/handleFetchError";
 import { GET_PLAYER_SEASON_AVERAGE_URL, GET_PlAYER_URL } from "@/api/api";
 import { PlayerAverages } from "@/types/PlayerAverages";
