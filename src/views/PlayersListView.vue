@@ -22,7 +22,15 @@
         </VaButton>
       </div>
       <div class="mainContainer__playerList">
-        <span v-if="playersList.length < 1">Not found any player</span>
+        <span v-if="fetchState === FetchState.isLoadFail"
+          >An error occurred while fetching data</span
+        >
+        <span v-if="fetchState === FetchState.isLoading">loading</span>
+
+        <span
+          v-if="playersList.length < 1 && fetchState === FetchState.isLoaded"
+          >Player not found</span
+        >
         <ul>
           <li
             class="mainContainer__item"
@@ -107,6 +115,7 @@ export default defineComponent({
       lastPageNumber: 126,
       fetchState: FetchState.isIdle,
       searchInput: "" as string,
+      FetchState,
     };
   },
 

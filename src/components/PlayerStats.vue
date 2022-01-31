@@ -7,32 +7,30 @@
 
     <div class="stats__rangeInputs">
       <h3>Choose seasons range <span>(max 5 seasons)</span></h3>
-      <div>
-        <div>
-          <label for="fromSeasonInput">from</label>
-          <VaInput
-            id="fromSeasonInput"
-            model-value="Number"
-            placeholder="type season"
-            @keyup.enter="getSeasonsAverages"
-            v-model="fromSeasonInput"
-          />
-          <label for="fromSeasonInput">to</label>
-          <VaInput
-            id="toSeasonInput"
-            model-value="Number"
-            placeholder="type season"
-            @keyup.enter="getSeasonsAverages"
-            v-model="toSeasonInput"
-          />
-          <VaButton
-            icon-right="query_stats"
-            gradient
-            :rounded="false"
-            @click="getSeasonsAverages"
-            >GET SEASONS AVERAGES</VaButton
-          >
-        </div>
+      <div class="stats__fromTo">
+        <label for="fromSeasonInput">from</label>
+        <VaInput
+          id="fromSeasonInput"
+          model-value="Number"
+          placeholder="type season"
+          @keyup.enter="getSeasonsAverages"
+          v-model="fromSeasonInput"
+        />
+        <label for="fromSeasonInput">to</label>
+        <VaInput
+          id="toSeasonInput"
+          model-value="Number"
+          placeholder="type season"
+          @keyup.enter="getSeasonsAverages"
+          v-model="toSeasonInput"
+        />
+        <VaButton
+          icon-right="query_stats"
+          gradient
+          :rounded="false"
+          @click="getSeasonsAverages"
+          >GET SEASONS AVERAGES</VaButton
+        >
       </div>
     </div>
 

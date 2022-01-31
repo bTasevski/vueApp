@@ -3,22 +3,34 @@
     <h2 class="basicDataContainer__headingH2">Basic information:</h2>
     <div class="basicDataContainer__playerDataContainer">
       <div class="basicDataContainer__detail">
-        <span> Name: {{ playerBasicData?.first_name }}</span>
+        <span>
+          Name:
+          <span class="bold">{{ playerBasicData?.first_name }}</span></span
+        >
       </div>
 
       <div class="basicDataContainer__detail">
-        <span> Last name: {{ playerBasicData?.last_name }}</span>
+        <span>
+          Last name:
+          <span class="bold">{{ playerBasicData?.last_name }}</span></span
+        >
       </div>
 
       <div class="basicDataContainer__detail">
-        <span>Team: {{ playerBasicData?.team.full_name }}</span>
+        <span
+          >Team:
+          <span class="bold">{{ playerBasicData?.team.full_name }}</span></span
+        >
       </div>
 
       <div class="basicDataContainer__detail" v-if="playerBasicData?.position">
-        <span> Position: {{ playerBasicData?.position }}</span>
+        <span>
+          Position:
+          <span class="bold">{{ playerBasicData?.position }}</span></span
+        >
       </div>
       <div class="basicDataContainer__detail" v-else>
-        <span> Position:Not available</span>
+        <span> Position: <span class="bold">Not available</span></span>
       </div>
 
       <div
@@ -26,23 +38,29 @@
         v-if="playerBasicData?.height_feet"
       >
         <span>
-          Height: {{ playerBasicData?.height_feet }}'{{
-            playerBasicData?.height_inches
-          }}''</span
+          Height:
+          <span class="bold"
+            >{{ playerBasicData?.height_feet }}'{{
+              playerBasicData?.height_inches
+            }}''</span
+          ></span
         >
       </div>
       <div class="basicDataContainer__detail" v-else>
-        <span> Height: Not available</span>
+        <span> Height: <span class="bold">Not available</span></span>
       </div>
 
       <div
         class="basicDataContainer__detail"
         v-if="playerBasicData?.weight_pounds"
       >
-        <span> Weight: {{ playerBasicData?.weight_pounds }}lb</span>
+        <span>
+          Weight:
+          <span class="bold">{{ playerBasicData?.weight_pounds }}lb</span></span
+        >
       </div>
       <div class="basicDataContainer__detail" v-else>
-        <span> Weight: Not available</span>
+        <span> Weight: <span class="bold">Not available</span></span>
       </div>
     </div>
   </div>

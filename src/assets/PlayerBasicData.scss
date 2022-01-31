@@ -7,10 +7,12 @@
 
   &__headingH2 {
     font-size: 34px;
+    margin-bottom: 15px;
   }
 
   &__playerDataContainer {
     font-size: 30px;
+    line-height: 1.2;
   }
 
   &__detail {
@@ -19,4 +21,7 @@
 
     justify-content: space-between;
   }
+}
+.bold {
+  font-weight: 600;
 }
