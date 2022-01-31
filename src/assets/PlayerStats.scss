@@ -1,0 +1,11 @@
+.stats {
+  &__rangeInputs {
+    grid-area: range;
+  }
+  &__rangeInputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+}

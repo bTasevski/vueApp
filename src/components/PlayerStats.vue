@@ -1,31 +1,45 @@
 <template>
-  <div style="display: flex; gap: 100px">
-    <PlayerBasicData :playerBasicData="playerBasicData" />
-    <div>
+  <div class="stats">
+    <PlayerBasicData
+      class="stats__basicData"
+      :playerBasicData="playerBasicData"
+    />
+
+    <div class="stats__rangeInputs">
       <h3>Choose seasons range <span>(max 5 seasons)</span></h3>
       <div>
         <div>
           <label for="fromSeasonInput">from</label>
-          <input
+          <VaInput
             id="fromSeasonInput"
-            type="number"
+            model-value="Number"
             placeholder="type season"
             @keyup.enter="getSeasonsAverages"
             v-model="fromSeasonInput"
           />
           <label for="fromSeasonInput">to</label>
-          <input
+          <VaInput
             id="toSeasonInput"
-            type="number"
+            model-value="Number"
             placeholder="type season"
             @keyup.enter="getSeasonsAverages"
             v-model="toSeasonInput"
           />
-          <button @click="getSeasonsAverages">Get seasons averages</button>
+          <VaButton
+            icon-right="query_stats"
+            gradient
+            :rounded="false"
+            @click="getSeasonsAverages"
+            >GET SEASONS AVERAGES</VaButton
+          >
         </div>
       </div>
     </div>
-    <PlayerSpecificData v-bind:playerSpecificData="playerSpecificData" />
+
+    <PlayerSpecificData
+      class="stats__charts"
+      v-bind:playerSpecificData="playerSpecificData"
+    />
   </div>
 </template>
 
@@ -37,9 +51,11 @@ import { FetchState } from "@/types/FetchType";
 import { handleFetchErrors } from "@/methods/handleFetchError";
 import { GET_PLAYER_SEASON_AVERAGE_URL, GET_PlAYER_URL } from "@/api/api";
 import { PlayerAverages } from "@/types/PlayerAverages";
+import { VaButton, VaInput } from "vuestic-ui";
+import "../assets/PlayerStats.scss";
 
 export default defineComponent({
-  components: { PlayerBasicData, PlayerSpecificData },
+  components: { PlayerBasicData, PlayerSpecificData, VaButton, VaInput },
   data() {
     return {
       fromSeasonInput: 2016,
@@ -57,7 +73,8 @@ export default defineComponent({
         weight_pounds: null as null | number,
       },
       id: this.$route.params.id as string,
-      fetchState: FetchState.isIdle,
+      basicFetchState: FetchState.isIdle,
+      specificFetchState: FetchState.isIdle,
       playerSpecificData: [] as Array<PlayerAverages>,
       seasons: [] as Array<number | null>,
       gamesPerSeason: [] as Array<number | null>,
@@ -67,7 +84,7 @@ export default defineComponent({
 
   methods: {
     async getBasicData(url: string) {
-      this.fetchState = FetchState.isLoading;
+      this.basicFetchState = FetchState.isLoading;
       try {
         await fetch(url)
           .then(handleFetchErrors)
@@ -75,17 +92,17 @@ export default defineComponent({
           .then((data) => {
             this.playerBasicData = data;
             console.log(this.playerBasicData);
-            this.fetchState = FetchState.isLoaded;
+            this.basicFetchState = FetchState.isLoaded;
           });
       } catch (error) {
         console.log(error);
-        this.fetchState = FetchState.isLoadFail;
+        this.basicFetchState = FetchState.isLoadFail;
       }
     },
 
     async getSpecificData(url: string) {
       this.playerSpecificData = [];
-      this.fetchState = FetchState.isLoading;
+      this.specificFetchState = FetchState.isLoading;
       try {
         await fetch(url)
           .then(handleFetchErrors)
@@ -93,11 +110,11 @@ export default defineComponent({
           .then((data) => {
             this.playerSpecificData.push(data.data);
             console.log(this.playerSpecificData);
-            this.fetchState = FetchState.isLoaded;
+            this.specificFetchState = FetchState.isLoaded;
           });
       } catch (error) {
         console.log(error);
-        this.fetchState = FetchState.isLoadFail;
+        this.specificFetchState = FetchState.isLoadFail;
       }
     },
 

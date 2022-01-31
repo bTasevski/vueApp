@@ -1,0 +1,7 @@
+.chartsContainer {
+  display: flex;
+  flex-direction: row;
+  grid-area: charts;
+  width: 1300px;
+  justify-content: space-around;
+}

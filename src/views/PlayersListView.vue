@@ -1,43 +1,34 @@
 <template>
-  <div style="display: flex; gap: 100px">
-    <div class="PlayersList">
-      <div>
-        <button @click="decrement">Prev</button>
-
-        <div style="display: inline-block">
-          page {{ pageNumber }} of {{ lastPageNumber }}
-        </div>
-
-        <button @click="increment">Next</button>
-      </div>
-      <div>
-        <input
-          placeholder="choose page"
-          type="number"
-          v-model.number="selectedPageNumber"
-          @keyup.enter="goTo"
-        />
-
-        <button @click="goTo">Go to</button>
-      </div>
-      <div>
-        <input
+  <header class="mainHeader"><h1>NBA Stats</h1></header>
+  <div class="mainContainer">
+    <div class="mainContainer__sidebar">
+      <div class="mainContainer__search">
+        <VaInput
+          class="mainContainer__search--input"
+          model-value="String"
           placeholder="search"
           @keyup.enter="searchPlayer"
           v-model="searchInput"
         />
-        <button
+        <VaButton
+          icon-right="search"
+          gradient
+          :rounded="false"
           title="Search player by name or/and surname. Be specific - list
         will show max. of 30 matching players"
           @click="searchPlayer"
         >
-          search
-        </button>
+          SEARCH
+        </VaButton>
       </div>
-      <div>
-        <h2>Players List:</h2>
+      <div class="mainContainer__playerList">
+        <span v-if="playersList.length < 1">Not found any player</span>
         <ul>
-          <li v-for="player in playersList" :key="player.id">
+          <li
+            class="mainContainer__item"
+            v-for="player in playersList"
+            :key="player.id"
+          >
             <router-link
               :to="{ name: 'PlayerStats', params: { id: player.id } }"
               append
@@ -46,10 +37,49 @@
           </li>
         </ul>
       </div>
+      <div class="mainContainer__moveButtonsContainer">
+        <div>
+          <div class="mainContainer__nextPrevButtons">
+            <VaButton
+              icon="navigate_before"
+              gradient
+              :rounded="false"
+              @click="decrement"
+              >PREV</VaButton
+            >
+            <div class="mainContainer__pageNumber">
+              PAGE {{ pageNumber }}/{{ lastPageNumber }}
+            </div>
 
-      <p v-if="playersList.length < 1">not found</p>
+            <VaButton
+              icon-right="navigate_next"
+              gradient
+              :rounded="false"
+              @click="increment"
+              >NEXT</VaButton
+            >
+          </div>
+        </div>
+        <div class="mainContainer__goTo">
+          <VaButton
+            icon-right="keyboard_double_arrow_right"
+            style="display: inline-block"
+            gradient
+            :rounded="false"
+            @click="goTo"
+            >GO TO</VaButton
+          >
+          <VaInput
+            style="display: inline-block"
+            class="mainContainer__goToInput"
+            model-value="Number"
+            v-model.number="selectedPageNumber"
+            @keyup.enter="goTo"
+          />
+        </div>
+      </div>
     </div>
-    <router-view :key="$route.fullPath" />
+    <div><router-view :key="$route.fullPath" class="statsContainer" /></div>
   </div>
 </template>
 
@@ -60,8 +90,15 @@ import { FetchState } from "@/types/FetchType";
 import { GET_ALL_PlAYERS_URL } from "@/api/api.ts";
 import { GET_SEARCHED_PLAYERS_URL } from "@/api/api.ts";
 import { handleFetchErrors } from "@/methods/handleFetchError";
+import { VaButton, VaInput } from "vuestic-ui";
+import "@/assets/PlayerListView.scss";
 
 export default defineComponent({
+  components: {
+    VaButton,
+    VaInput,
+  },
+
   data() {
     return {
       playersList: [] as Array<PlayerType>,

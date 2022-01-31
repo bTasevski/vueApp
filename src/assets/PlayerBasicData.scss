@@ -1,0 +1,22 @@
+.basicDataContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-area: basic;
+
+  &__headingH2 {
+    font-size: 34px;
+  }
+
+  &__playerDataContainer {
+    font-size: 30px;
+  }
+
+  &__detail {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+  }
+}

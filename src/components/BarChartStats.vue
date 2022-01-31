@@ -1,5 +1,7 @@
 <template>
-  <BarChart v-bind="barChartProps" />
+  <div style="">
+    <BarChart v-bind="barChartProps" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -31,6 +33,8 @@ export default defineComponent({
     }));
 
     const options = computed<ChartOptions<"bar">>(() => ({
+      responsive: true,
+      maintainAspectRatio: true,
       plugins: {
         legend: { display: false },
         title: {

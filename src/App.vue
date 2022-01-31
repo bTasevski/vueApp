@@ -8,8 +8,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import "./assets/GlobalStyles.scss";
 export default defineComponent({
   name: "App",
   components: {},
 });
 </script>
+
+<style></style>
