@@ -6,7 +6,8 @@
     />
 
     <div class="stats__rangeInputs">
-      <h3>Choose seasons range <span>(max 5 seasons)</span></h3>
+      <h3>Choose seasons range</h3>
+      <span>(max 5 seasons)</span>
       <div class="stats__fromTo">
         <label for="fromSeasonInput">from</label>
         <input

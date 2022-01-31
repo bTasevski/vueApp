@@ -52,9 +52,12 @@
   }
   &__item {
     border-bottom: 1px solid grey;
-    line-height: 1.6;
+    line-height: 1.7;
     &:last-child {
       border-bottom: none;
+    }
+    &:hover {
+      background-color: rgb(244, 248, 250);
     }
   }
   &__moveButtonsContainer {
